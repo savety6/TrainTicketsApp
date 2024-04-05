@@ -1,3 +1,4 @@
+import TicketForm from '@/app/(Components)/TicketForm'
 import React from 'react'
 
 type Props = {
@@ -6,8 +7,8 @@ type Props = {
     }
 }
 
-export default function page({ params }: Props) {
+export default function TicketPage({ params }: Props) {
     return (
-        <div>page {params.id}</div>
+        <TicketForm />
     )
 }

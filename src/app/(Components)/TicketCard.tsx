@@ -4,28 +4,33 @@ import PriorityDisplay from './PriorityDisplay'
 import ProgressDisplay from './ProgressDisplay'
 import StatusDisplay from './StatusDisplay'
 
-type Props = {}
+import type { TicketData } from '../(Types)'
 
-function TicketCard({ }: Props) {
+type Props = {
+    id: number
+    ticket: TicketData
+}
+
+function TicketCard({ id, ticket }: Props) {
     return (
-        <div className='flex flex-col bg-card hover:bg-card-hover rounded-md shadow-lg p-3 m-2'>
+        <div id={`TicketCard-${id}`} className='flex flex-col bg-card hover:bg-card-hover rounded-md shadow-lg p-3 m-2'>
             <div className='flex mb-3'>
-                <PriorityDisplay />
+                <PriorityDisplay value={ticket.priority} />
                 <div className='ml-auto'>
                     <DeleteBlock />
                 </div>
             </div>
-            <h4>Title</h4>
+            <h4>{ticket.title}</h4>
             <hr className='h-px border-0 bg-page mb-0' />
-            <p className='whitespace-pre-wrap'>this is the ticket description</p>
+            <p className='whitespace-pre-wrap'>{ticket.description}</p>
             <div className='flex-grow' />
             <div className='flex mt-2'>
                 <div className='flex flex-col'>
-                    <p className='text-xs my-1'>10/05/2023 18:30PM</p>
-                    <ProgressDisplay />
+                    <p className='text-xs my-1'>{ticket.createdAt}</p>
+                    <ProgressDisplay value={ticket.progress}/>
                 </div>
                 <div className='flex ml-auto items-end'>
-                    <StatusDisplay />
+                    <StatusDisplay value={ticket.status}/>
                 </div>
             </div>
         </div>

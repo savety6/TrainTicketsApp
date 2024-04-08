@@ -1,4 +1,5 @@
 export type TicketData = {
+    _id: string,
     title: string,
     description: string,
     priority: number,

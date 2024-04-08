@@ -1,15 +1,30 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
-mongoose.connect(process.env.MONGODB_URI)
+interface ITicket extends Document {
+    title: string;
+    description: string;
+    category: string;
+    priority: number;
+    progress: number;
+    status: string;
+    active: boolean;
+}
+
+if (process.env.MONGODB_URI) {
+    mongoose.connect(process.env.MONGODB_URI);
+} else {
+    console.error("MONGODB_URI is not defined.");
+}
+
 mongoose.Promise = global.Promise;
 
-const ticketSchema = new Schema(
+const ticketSchema = new Schema<ITicket>(
     {
         title: String,
         description: String,
         category: String,
         priority: Number,
-        process: Number,
+        progress: Number,
         status: String,
         active: Boolean,
     },
@@ -18,6 +33,4 @@ const ticketSchema = new Schema(
     }
 );
 
-const Ticket = mongoose.model.Ticket || mongoose.model("Ticket", ticketSchema);
-
-export default Ticket;
+export default mongoose.models.Ticket || mongoose.model<ITicket>('Ticket', ticketSchema);

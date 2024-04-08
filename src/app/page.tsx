@@ -8,9 +8,11 @@ interface TicketResponse {
 }
 
 const getTickets = async (): Promise<TicketResponse | undefined> => {
+	console.error("Tickets loaded successfully.");
 	try {
 		const res = await fetch("http://localhost:3000/api/Tickets", {
 			cache: "no-store",
+			method: "GET",
 		});
 
 		if (!res.ok) {

@@ -1,4 +1,4 @@
-import TicketForm from '@/app/(Components)/TicketForm'
+import TicketForm from '@/Components/TicketForm'
 import React from 'react'
 
 type Props = {

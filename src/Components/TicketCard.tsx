@@ -4,7 +4,7 @@ import PriorityDisplay from './PriorityDisplay'
 import ProgressDisplay from './ProgressDisplay'
 import StatusDisplay from './StatusDisplay'
 
-import type { TicketData } from '../(Types)'
+import type { TicketData } from '@/Types'
 import Link from 'next/link'
 
 type Props = {

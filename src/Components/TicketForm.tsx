@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import type { TicketData } from '../(Types)'
+import type { TicketData } from '@/Types'
 
 type Props = {
     ticket: TicketData

@@ -1,7 +1,8 @@
 import Image from "next/image";
-import TicketCard from "./(Components)/TicketCard";
+import TicketCard from "@/Components/TicketCard";
 
-import type { TicketData } from "./(Types)";
+import type { TicketData } from "@/Types";
+import { useRouter } from "next/navigation";
 
 interface TicketResponse {
 	tickets?: TicketData[];

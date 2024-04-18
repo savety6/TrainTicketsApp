@@ -6,7 +6,7 @@ import { MongoError } from "mongodb";
 const router = Router();
 
 const generateToken = (user) => {
-    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET, {
         expiresIn: '1w', // Token expiration time
     });
 };
@@ -49,6 +49,8 @@ router.post("/login", async (req, res) => {
 
 router.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
+    console.log("Registering user:", name, email, password);
+    
     try {
         const user = new User({
             name,

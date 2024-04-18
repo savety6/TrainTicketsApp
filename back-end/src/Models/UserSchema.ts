@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
-        min:5,
+        min:3,
         max:255,
         unique:true
     },
@@ -17,14 +17,17 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        min:6
+        min:3
     },
-    diaryEntries:{
-        type: Date,
-        default: Date.now,
-        required:true
-    }
-});
+    isAdmin:{
+        type:Boolean,
+        default:false
+    },
+    image:{
+        type:String,
+        default:''
+    },
+}, {timestamps:true});
 
 UserSchema.pre('save', async function(next){
     if (!this.isModified('password')) return next();
@@ -39,6 +42,6 @@ UserSchema.methods.comparePassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('Users', UserSchema);
 
 export default User;

@@ -31,7 +31,7 @@
 		align-self: center;
 		width: 100vw;
 		height: 60px;
-		background-color: rgb(42, 50, 53);
+		background: rgb(28, 26, 46);
 	}
 	.logo {
 		margin: 0;

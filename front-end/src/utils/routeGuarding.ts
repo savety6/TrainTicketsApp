@@ -1,11 +1,15 @@
 import { user } from '../context/userStore';
 import { get } from 'svelte/store';
 import { navigate } from 'svelte-routing';
+import { isLocalStorageForTokenValid, parseJwt } from '.';
 
 // Check if there is a user logged in
 export function userLoggedIn() {
-    const currentUser = get(user);
-  return currentUser !== null;
+    const userStore = get(user);
+    if (userStore) {
+        return true;
+    }
+    return isLocalStorageForTokenValid();
 }
 
 // Redirect if not logged in
@@ -14,6 +18,13 @@ export function requireAuth(route) {
     if (!isLoggedIn) {
         navigate('/login', { replace: true });
     } else {
+        if(isLocalStorageForTokenValid()){
+            const token = localStorage.getItem('TrainTicketsApp-jwt');
+            const decoded = parseJwt(token);
+            if (decoded) {
+                user.set(decoded);
+            }
+        }
         return route;
     }
 }

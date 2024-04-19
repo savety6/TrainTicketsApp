@@ -7,6 +7,7 @@
 
 	function logout() {
 		user.set(null);
+		localStorage.removeItem("TrainTicketsApp-jwt");
 	}
 </script>
 

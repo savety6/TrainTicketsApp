@@ -6,7 +6,7 @@ export type Route = {};
 
 export type UserActionIncomingData = {
     name: string;
-    email: string;
+    email?: string;
     password: string;
 };
 

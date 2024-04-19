@@ -1,35 +1,47 @@
 <script>
     import { Link, navigate } from "svelte-routing";
     import { user } from "../context/userStore";
+    import { loginUser } from "../lib/actions";
+	import { parseJwt } from "../utils";
 
 	let currentUser;
 	user.subscribe((value) => (currentUser = value));
 
-	let email = "";
+	let name = "";
 	let password = "";
+    let error = "";
 
-	function handleLogin() {
-		// handle login logic here
-		console.log(`Logging in user: ${email}, ${password}`);
-        user.set({ name: 'John Doe', role: 'admin' });
-        navigate('/');
+	async function handleLogin() {
+        // Check if passwords match
+		const response = await loginUser({ name, password });
+		if (response.status == "success") {
+			user.set(parseJwt(response.token));
+			localStorage.setItem("TrainTicketsApp-jwt", response.token);
+			navigate("/");
+		} else {
+			error = response.message;
+		}
+        
 	}
 </script>
 
 <main class="container">
 	<h1>Login</h1>
 	<form class="form" on:submit|preventDefault={handleLogin}>
-		<label for="email">Email</label>
-		<input id="email" type="email" bind:value={email} required />
+		<label for="name">Email</label>
+		<input id="name" type="text" name="name" bind:value={name} required />
 
 		<label for="password">Password</label>
-		<input id="password" type="password" bind:value={password} required />
+		<input id="password" type="password" name="password" bind:value={password} required />
 
 		<button type="submit">Login</button>
         <p>
             Don't have an account?
             <Link to="register">Register</Link>
         </p>
+        <p class="error">
+			{error}
+		</p>
 	</form>
 </main>
 

@@ -25,7 +25,7 @@ def run_command(cmd, cwd, prefix, color_code):
 
 if __name__ == "__main__":
     threads = []
-    threads.append(run_command("yarn startDev", "./back-end", "back-end", "31"))  # Red color
+    threads.append(run_command("yarn startDev", "./back-end", "back-end", "33"))  # Yellow color
     threads.append(run_command("yarn dev", "./front-end", "front-end", "32"))  # Green color
     
     for thread in threads:

@@ -6,7 +6,7 @@ import { MongoError } from "mongodb";
 const router = Router();
 
 const generateToken = (user) => {
-    return jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET, {
+    return jwt.sign({ _id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, discountCardStatus: user.discountCardStatus }, process.env.JWT_SECRET, {
         expiresIn: '1w', // Token expiration time
     });
 };

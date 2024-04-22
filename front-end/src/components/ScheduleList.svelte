@@ -20,6 +20,7 @@
 
 </script>
 
+{#if selectedRoute}
 <div>
     <h1>Schedules</h1>
     <ul class="container">
@@ -35,6 +36,7 @@
         {/each}
     </ul>
 </div>
+{/if}
 
 <style>
     h1 {

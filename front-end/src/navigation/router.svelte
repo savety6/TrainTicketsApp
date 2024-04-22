@@ -7,6 +7,7 @@
 	import NavBar from "../components/NavBar.svelte";
 	import Login from "../pages/Login.svelte";
 	import Register from "../pages/Register.svelte";
+    import MyTickets from "../pages/MyTickets.svelte";
 </script>
 
 <Router>
@@ -18,6 +19,7 @@
 				<Route path="/about" component={() => requireAuth(About)} />
 				<Route path="/login" component={() => guestOnly(Login)} />
 				<Route path="/register" component={() => guestOnly(Register)} />
+                <Route path="/MyTickets" component={() => requireAuth(MyTickets)} />                    
 			</div>
 		</div>
 	</div>

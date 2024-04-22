@@ -16,9 +16,7 @@ const router = Router();
 // GET all Stations
 router.get('/stations', protect, async (req, res) => {
     try {
-        console.log("someone pinged on /stations");
         const stations = await Stations.find();
-        console.log(stations);
         res.json(stations);
     } catch (error) {
         res.status(500).json({ error: error });
@@ -48,8 +46,6 @@ router.get('/route/:stationId', protect, async (req, res) => {
 // GET all routes where origin is the station ID
 router.get('/routes/:stationId', protect, async (req, res) => {
     try {
-        console.log("someone pinged on /routes/:stationId", req.params.stationId);
-
         const routes = await Route.find({ originStationId: req.params.stationId });
         res.status(200).json(routes);
     } catch (error) {

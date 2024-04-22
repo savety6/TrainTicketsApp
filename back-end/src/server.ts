@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import Auth from './Routes/AuthRouter';
 import User from './Routes/UserRouter';
 import Schedule from './Routes/ScheduleRouter';
+import Ticket from './Routes/TicketRouter';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/Auth', Auth);
 app.use('/User', User);
 app.use('/Schedule', Schedule);
+app.use('/Tickets', Ticket);
 
 app.get('/', (_req, res) => {
     console.log('someone pinged here');

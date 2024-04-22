@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { SelectedCity } from "../context/Schedule";
+	import { SelectedCity, SelectedSchedule, SelectedRoute } from "../context/Schedule";
+	import { user } from "../context/userStore";
 
-    import { fetchCities } from "../lib/actions";
+	import { fetchCities } from "../lib/actions";
 
-    import type { City } from "../Types";
-    
+	import type { City } from "../Types";
+
+	let currentUser = null;
+	user.subscribe((value) => (currentUser = value));
+
 	let cities: Array<City> = [];
 
 	onMount(async () => {
@@ -15,25 +19,28 @@
 
 	function handleClick(city: City) {
 		SelectedCity.set(city);
+        SelectedSchedule.set(null);
+        SelectedRoute.set(null);
 	}
 </script>
 
-<main>
-	<h1>Cities</h1>
-	<ul class="container">
-		{#each cities as city}
-			<button
-
-				on:click={() => handleClick(city)}
-				style="background-color: #{Math.floor(
-					Math.random() * 16777215,
-				).toString(16)}"
-			>
-				{city.name}
-			</button>
-		{/each}
-	</ul>
-</main>
+{#if currentUser}
+	<main>
+		<h1>Cities</h1>
+		<ul class="container">
+			{#each cities as city}
+				<button
+					on:click={() => handleClick(city)}
+					style="background-color: #{Math.floor(
+						Math.random() * 16777215,
+					).toString(16)}"
+				>
+					{city.name}
+				</button>
+			{/each}
+		</ul>
+	</main>
+{/if}
 
 <style>
 	h1 {
@@ -51,21 +58,21 @@
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 	button {
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        background-color: transparent;
-        border: none;
-        color: inherit;
-        font: inherit;
-        line-height: normal;
-        overflow: visible;
-        text-transform: none;
-    }
-    button:hover {
-        transform: scale(1.05);
-        transition: transform 0.2s;
-    }
+		padding: 1rem;
+		margin: 0.5rem 0;
+		border-radius: 0.5rem;
+		cursor: pointer;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		background-color: transparent;
+		border: none;
+		color: inherit;
+		font: inherit;
+		line-height: normal;
+		overflow: visible;
+		text-transform: none;
+	}
+	button:hover {
+		transform: scale(1.05);
+		transition: transform 0.2s;
+	}
 </style>

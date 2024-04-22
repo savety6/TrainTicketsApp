@@ -1,6 +1,14 @@
-export type Ticket = {};
 export type Train = {};
 export type Station = {};
+
+export type Ticket = {
+    _id: string;
+    userId: string;
+    title: string;
+    description: string;
+    status: 'pending' | 'completed' | 'in-progress';
+    price: string;
+};
 
 export type User = {
     _id: string;
@@ -33,7 +41,7 @@ export type Route = {
     trainId: string;
     originStationId: string;
     destinationStationId: string;
-    basePrice: number;
+    basePrice: {$numberDecimal: string};
     name: string;
 };
 

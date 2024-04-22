@@ -1,4 +1,4 @@
-import type { UserActionIncomingData, UserActionResponse } from '../Types';
+import type { Ticket, UserActionIncomingData, UserActionResponse } from '../Types';
 
 export async function registerUser(credentials: UserActionIncomingData): Promise<UserActionResponse> {
     try {
@@ -49,7 +49,7 @@ export async function loginUser(credentials: UserActionIncomingData): Promise<Us
     }
 }
 
-export async function fetchCities(){
+export async function fetchCities() {
     try {
         const token = localStorage.getItem('TrainTicketApp_jwt');
         const response = await fetch("http://localhost:3001/Schedule/stations", {
@@ -60,8 +60,7 @@ export async function fetchCities(){
             }
         });
         const data = await response.json();
-        console.log(data);
-        
+
         if (response.ok) {
             return { status: 'success', message: 'Cities fetched successfully', cities: data };
         } else {
@@ -98,7 +97,7 @@ export async function fetchRoutes(city: string) {
     }
 }
 
-export async function fetchScheduleByRouteId(routeId: string){
+export async function fetchScheduleByRouteId(routeId: string) {
     try {
         const token = localStorage.getItem('TrainTicketApp_jwt');
         if (!token) return { status: 'error', message: 'User not authenticated' }
@@ -120,9 +119,9 @@ export async function fetchScheduleByRouteId(routeId: string){
         console.error('An error occurred:', error);
         return { status: 'error', message: error.message };
     }
-} 
+}
 
-export async function fetchDiscountCardsWaitingList(){
+export async function fetchDiscountCardsWaitingList() {
     try {
         const token = localStorage.getItem('TrainTicketApp_jwt');
         if (!token) return { status: 'error', message: 'User not authenticated' }
@@ -147,11 +146,11 @@ export async function fetchDiscountCardsWaitingList(){
     }
 }
 
-export async function applyForDiscountCard(userId: string, type: string){
+export async function applyForDiscountCard(userId: string, type: string) {
     try {
         const token = localStorage.getItem('TrainTicketApp_jwt');
         if (!token) return { status: 'error', message: 'User not authenticated' }
-        
+
         const response = await fetch(`http://localhost:3001/Schedule/discountCardWaitingList/${userId}`, {
             method: 'POST',
             headers: {
@@ -173,11 +172,11 @@ export async function applyForDiscountCard(userId: string, type: string){
     }
 }
 
-export async function approvedDiscountCard(userId: string){
+export async function approvedDiscountCard(userId: string) {
     try {
         const token = localStorage.getItem('TrainTicketApp_jwt');
         if (!token) return { status: 'error', message: 'User not authenticated' }
-        
+
         const response = await fetch(`http://localhost:3001/Schedule/discountCardWaitingList/${userId}`, {
             method: 'PATCH',
             headers: {
@@ -198,11 +197,11 @@ export async function approvedDiscountCard(userId: string){
     }
 }
 
-export async function rejectDiscountCard(userId: string){
+export async function rejectDiscountCard(userId: string) {
     try {
         const token = localStorage.getItem('TrainTicketApp_jwt');
         if (!token) return { status: 'error', message: 'User not authenticated' }
-        
+
         const response = await fetch(`http://localhost:3001/Schedule/discountCardWaitingList/${userId}`, {
             method: 'DELETE',
             headers: {
@@ -222,4 +221,111 @@ export async function rejectDiscountCard(userId: string){
         return { status: 'error', message: error.message };
     }
 }
-    
+
+export async function buyTicket(ticketData: Ticket) {
+    try {
+        const token = localStorage.getItem('TrainTicketApp_jwt');
+        if (!token) return { status: 'error', message: 'User not authenticated' }
+
+        const { _id, ...strippedTicketData } = ticketData;
+        const body = JSON.stringify(strippedTicketData);
+        const response = await fetch(`http://localhost:3001/Tickets`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body
+        });
+        const data = await response.json();
+        if (response.ok) {
+            return { status: 'success', message: 'Ticket purchased successfully' };
+        } else {
+            console.error('Purchasing ticket failed:', data.error);
+            return { status: 'error', message: data.error };
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        return { status: 'error', message: error.message };
+    }
+}
+
+export async function fetchTickets(userId: string) {
+    try {
+        const token = localStorage.getItem('TrainTicketApp_jwt');
+        if (!token) return { status: 'error', message: 'User not authenticated' }
+
+        const response = await fetch(`http://localhost:3001/Tickets/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            return { status: 'success', message: 'Tickets fetched successfully', tickets: data };
+        } else {
+            console.error('Fetching tickets failed:', data.error);
+            return { status: 'error', message: data.error };
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        return { status: 'error', message: error.message };
+    }
+}
+
+export async function cancelTicket(ticketId: string) {
+    try {
+        const token = localStorage.getItem('TrainTicketApp_jwt');
+        if (!token) return { status: 'error', message: 'User not authenticated' }
+
+        const response = await fetch(`http://localhost:3001/Tickets/${ticketId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        if (response.ok) {
+            return { status: 'success', message: 'Ticket deleted successfully' };
+        } else {
+            const data = await response.json();
+            console.error('Deleting ticket failed:', data.error);
+            return { status: 'error', message: data.error };
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        return { status: 'error', message: error.message };
+    }
+}
+
+export async function updateTicket(ticketData: Ticket) {
+    try {
+        const token = localStorage.getItem('TrainTicketApp_jwt');
+        if (!token) return { status: 'error', message: 'User not authenticated' }
+
+        const { _id, ...strippedTicketData } = ticketData;
+        const body = JSON.stringify(strippedTicketData);
+        const response = await fetch(`http://localhost:3001/Tickets/${_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body
+        });
+        
+        if (response.ok) {
+            return { status: 'success', message: 'Ticket updated successfully' };
+        } else {
+            const data = await response.json();
+            console.error('Updating ticket failed:', data.error);
+            return { status: 'error', message: data.error };
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        return { status: 'error', message: error.message };
+    }
+}

@@ -14,6 +14,9 @@
 <nav class="nav">
 	<Link to="/" style={'color: white'}><h2 class="logo">Logo</h2></Link>
 	<div class="links">
+		{#if currentUser}
+		<Link to="/MyTickets" style={"padding: .4rem;"}>MyTickets</Link>
+		{/if}
 		<Link to="/" style={"padding: .4rem;"}>Home</Link>
 		<Link to="about" style={"padding: .4rem;"}>About</Link>
 		{#if currentUser}

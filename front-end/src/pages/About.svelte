@@ -15,8 +15,6 @@
 	let discountCardRequests = [];
 
 	onMount(() => {
-		console.log(currentUser);
-
 		if (currentUser && currentUser.isAdmin) {
 			fetchDiscountCardsWaitingList().then((data) => {
 				discountCardRequests = data.discountCards;

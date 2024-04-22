@@ -3,6 +3,7 @@
     import CityList from "../components/CityList.svelte";
     import RouteList from "../components/RouteList.svelte";
     import ScheduleList from "../components/ScheduleList.svelte";
+    import BuyTicketPanel from "../components/BuyTicketPanel.svelte";
 </script>
 
 <div>
@@ -13,6 +14,7 @@
     <CityList />
     <RouteList />
     <ScheduleList />
+    <BuyTicketPanel />
 </div>
 
 <style>

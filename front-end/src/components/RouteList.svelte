@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SelectedCity, SelectedRoute } from "../context/Schedule";
+	import { SelectedCity, SelectedRoute, SelectedSchedule } from "../context/Schedule";
 	import { fetchRoutes } from "../lib/actions";
 
 	import type { Route, City } from "../Types";
@@ -15,11 +15,12 @@
 	}
 
 	function handleClick(route: Route) {
-		console.log(route);
         SelectedRoute.set(route);
+        SelectedSchedule.set(null);
 	}
 </script>
 
+{#if selectedCity}
 <div>
 	<h1>Routes</h1>
 	<ul class="container">
@@ -35,6 +36,7 @@
 		{/each}
 	</ul>
 </div>
+{/if}
 
 <style>
 	h1 {

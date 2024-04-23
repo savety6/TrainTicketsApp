@@ -2,6 +2,8 @@ import { user } from '../context/userStore';
 import { get } from 'svelte/store';
 import { navigate } from 'svelte-routing';
 import { isLocalStorageForTokenValid, parseJwt } from '.';
+import { SvelteComponent } from 'svelte';
+import { User } from '../Types';
 
 // Check if there is a user logged in
 export function userLoggedIn() {
@@ -13,16 +15,19 @@ export function userLoggedIn() {
 }
 
 // Redirect if not logged in
-export function requireAuth(route) {
+export function requireAuth(route: SvelteComponent) {
     const isLoggedIn = userLoggedIn();
     if (!isLoggedIn) {
         navigate('/login', { replace: true });
     } else {
         if(isLocalStorageForTokenValid()){
             const token = localStorage.getItem('TrainTicketsApp-jwt');
-            const decoded = parseJwt(token);
-            if (decoded) {
-                user.set(decoded);
+            if (!token) {
+                navigate('/login', { replace: true });
+            }
+            const decoded = token ? parseJwt(token) : null;
+            if (decoded !== null) {
+                user.set(decoded as any);
             }
         }
         return route;
@@ -30,7 +35,7 @@ export function requireAuth(route) {
 }
 
 // Redirect if logged in (for routes like login or register)
-export function guestOnly(route) {
+export function guestOnly(route: SvelteComponent) {
     const isLoggedIn = userLoggedIn();
     if (isLoggedIn) {
         navigate('/', { replace: true });

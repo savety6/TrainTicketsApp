@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import User from "../Models/UserSchema";
 import { MongoError } from "mongodb";
 
+import { authLoginController, authRegisterController } from "../Controllers/Auth";
+
 const router = Router();
 
 const generateToken = (user) => {
@@ -11,71 +13,11 @@ const generateToken = (user) => {
     });
 };
 
-router.post("/login", async (req, res) => {
-    const { name, email, password } = req.body;
-
-    try {
-        let user;
-
-        if (name) {
-            user = await User.findOne({ name });
-        } else if (email) {
-            user = await User.findOne({ email });
-        } else {
-            return res.status(400).json({ error: "Please provide either name or email" });
-        }
-        if (!user) {
-            return res.status(400).json({ error: "Invalid credentials" });
-        }
-
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            console.log("Invalid credentials");
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        const token = generateToken(user);
-        res.status(200).json({ token: token });
-    } catch (error) {
-        if (error instanceof MongoError) {
-            res.status(400).json({ error: error.message });
-        } else {
-            res.status(400).json({ error });
-        }
-    }
-});
+router.post("/login", authLoginController);
 
 
 
-router.post("/register", async (req, res) => {
-    const { name, email, password } = req.body;
-    console.log("Registering user:", name, email, password);
-    
-    try {
-        const user = new User({
-            name,
-            email,
-            password
-        });
-        await user.save();
-        const token = generateToken(user);
-        res.status(200).json({ token: token });
-    }
-    catch (error) {
-        console.log(error);
-        
-        if (error instanceof MongoError) {
-            if (error.code === 11000) { //TODO: check for other known errors
-                res.status(400).json({ error: "User already exists" });
-            } else {
-                res.status(400).json({ error: error.message });
-            }
-        }
-        else {
-            res.status(400).json({ error: error });
-        }
-    }
-});
+router.post("/register", authRegisterController);
 
 router.get("/verify", async (req, res) => {
     const BearerToken:string | undefined = req.headers.authorization;

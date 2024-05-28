@@ -1,35 +1,40 @@
 import mongoose from "mongoose";
-import  bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 const UserSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        min:3,
-        max:255,
-        unique:true
+    name: {
+        type: String,
+        required: true,
+        min: 3,
+        max: 255,
+        unique: true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
+    email: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    password:{
-        type:String,
-        required:true,
-        min:3
+    password: {
+        type: String,
+        required: true,
+        min: 3
     },
-    isAdmin:{
-        type:Boolean,
-        default:false
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
-    image:{
-        type:String,
-        default:''
+    discountCardStatus: {
+        type: String,
+        enum: ['none', 'waiting', 'denied', 'elderly', 'family'],
+        default: 'none'
     },
-}, {timestamps:true});
+    image: {
+        type: String,
+        default: ''
+    },
+}, { timestamps: true });
 
-UserSchema.pre('save', async function(next){
+UserSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
 
     const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
@@ -38,7 +43,7 @@ UserSchema.pre('save', async function(next){
     next();
 });
 
-UserSchema.methods.comparePassword = async function(enteredPassword) {
+UserSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 

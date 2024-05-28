@@ -1,13 +1,13 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "./dist/server.js",
+  "main": "./dist/src/server.js",
   "license": "GPL-3.0",
   "scripts": {
     "dev": "ts-node-dev --clear src/server.ts",
     "startDev": "nodemon src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/src/server.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.15",
@@ -15,18 +15,16 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.8.10",
     "nodemon": "^3.0.1",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "tsc": "^2.0.4",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@types/xml2js": "^0.4.14",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.0",
-    "xml2js": "^0.6.2"
+    "mongoose": "^8.0.0"
   }
 }
